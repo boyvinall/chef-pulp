@@ -16,3 +16,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+package 'pulp-server' do
+    action [ :install ]
+end
+
+directory '/etc/pulp/logging' do
+    recursive true
+    not_if { ::File.directory?('/etc/pulp/logging') }
+end
+
+directory '/etc/pulp/server/plugins.conf.d' do
+    recursive true
+    not_if { ::File.directory?('/etc/pulp/server/plugins.conf.d') }
+end
+
+template '/etc/pulp/server.conf' do
+    source 'server.conf.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+end
+
+directory '/etc/httpd/conf.d' do
+    recursive true
+    not_if { ::File.directory?('/etc/httpd/conf.d') }
+end
+
+template '/etc/httpd/conf.d/pulp.conf' do
+    source 'pulp.conf.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    notifies :restart, 'service[httpd]'
+end

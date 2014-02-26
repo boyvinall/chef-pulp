@@ -1,6 +1,5 @@
 Usage
 -----
-# TODO
 
 Description
 -----------
