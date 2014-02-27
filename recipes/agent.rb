@@ -16,3 +16,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Pulp agent which will run as service and will accept commands.
+#
+package 'pulp-agent' do
+    action :install
+end
+
+directory '/etc/pulp/agent/' do
+    recursive true
+end
+
+template '/etc/pulp/agent/agent.conf' do
+    source 'agent.conf.erb'
+    variables(
+        :config => node['pulp']['agent']
+    )
+end
+
+service 'pulp-agent' do
+    action [ :enable, :start ]
+end

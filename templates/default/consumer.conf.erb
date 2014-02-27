@@ -1,0 +1,9 @@
+# Managed by Chef, generated for <%= node['fqdn'] %>
+
+<% @config.each_pair do |block, block_data| -%>
+[<%= block -%>]
+<% block_data.each_pair do |key, value| -%>
+<%= key -%> = <%= value %>
+<% end %>
+
+<% end -%>

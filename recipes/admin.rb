@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: pulp
-# Recipe:: client
+# Recipe:: admin
 #
 # Copyright 2014, Marius Karnauskas
 #
@@ -16,19 +16,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Will consume Pulp repositories?!
+# Pulp admin console tools
 #
-package 'pulp-consumer-client' do
-    action :install
+%w{pulp-admin-client pulp-rpm-admin-extensions}.each do |pkg|
+    package pkg do
+        action :install
+    end
 end
 
-directory '/etc/pulp/consumer/conf.d' do
+directory '/etc/pulp/admin/conf.d' do
+    owner 'root'
+    group 'root'
+    mode '0755'
     recursive true
 end
 
-template '/etc/pulp/consumer/consumer.conf' do
-    source 'consumer.conf.erb'
+template '/etc/pulp/admin/admin.conf' do
+    source 'admin.conf.erb'
     variables(
-        :config => node['pulp']['client']
+        :config => node['pulp']['admin']
     )
 end
