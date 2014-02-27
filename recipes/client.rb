@@ -18,8 +18,10 @@
 #
 # Will consume Pulp repositories?!
 #
-package 'pulp-consumer-client' do
-    action :install
+%w{pulp-consumer-client pulp-rpm-consumer-extensions}.each do |pkg|
+    package pkg do
+        action :install
+    end
 end
 
 directory '/etc/pulp/consumer/conf.d' do

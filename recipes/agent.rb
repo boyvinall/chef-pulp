@@ -18,8 +18,12 @@
 #
 # Pulp agent which will run as service and will accept commands.
 #
-package 'pulp-agent' do
-    action :install
+include_recipe 'pulp::client'
+
+%w{pulp-agent pulp-rpm-yumplugins pulp-rpm-handlers}.each do |pkg|
+    package pkg do
+        action :install
+    end
 end
 
 directory '/etc/pulp/agent/' do
