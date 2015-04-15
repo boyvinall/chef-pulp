@@ -79,3 +79,5 @@ default['pulp']['client'] = {
     }
 
 }
+
+default['pulp']['repositories'] = []
