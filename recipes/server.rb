@@ -46,18 +46,9 @@ directory '/etc/httpd/conf.d' do
     not_if { ::File.directory?('/etc/httpd/conf.d') }
 end
 
-directory '/var/www/pub/http/repos' do
-    owner 'apache'
-    group 'apache'
-    mode '0755'
-    recursive true
-end
-
-directory '/var/www/pub/https/repos' do
-    owner 'apache'
-    group 'apache'
-    mode '0755'
-    recursive true
+execute 'chown /var/lib/pulp/published' do
+	command 'for r in http https yum; do mkdir -p /var/lib/pulp/published/$r/repos ; done ; chown -R apache:apache /var/lib/pulp/published'
+	only_if "find /var/lib/pulp/published -user root -type d | grep /var/lib/pulp/published"
 end
 
 template '/etc/httpd/conf.d/pulp.conf' do
