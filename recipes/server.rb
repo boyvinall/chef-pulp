@@ -61,6 +61,7 @@ end
 
 execute 'setup-db' do
     command "pulp-manage-db && touch '/var/lib/pulp/.dbinit'"
+    user 'apache'
     not_if { ::File.exists?('/var/lib/pulp/.dbinit') }
     notifies :restart, 'service[httpd]'
 end
