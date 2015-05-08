@@ -41,9 +41,30 @@ template '/etc/pulp/server.conf' do
     mode '0644'
 end
 
-directory '/etc/httpd/conf.d' do
-    recursive true
-    not_if { ::File.directory?('/etc/httpd/conf.d') }
+httpd_service 'default' do
+  action [:create, :start]
+end
+
+httpd_module 'wsgi' do
+  action :create
+end
+
+httpd_config 'ssl' do
+  source 'ssl.conf.erb'
+  notifies :restart, 'httpd_service[default]'
+  action :create
+end
+
+httpd_config 'pulp' do
+  source 'pulp.conf.erb'
+  notifies :restart, 'httpd_service[default]'
+  action :create
+end
+
+httpd_config 'pulp_rpm' do
+  source 'pulp_rpm.conf.erb'
+  notifies :restart, 'httpd_service[default]'
+  action :create
 end
 
 execute 'chown /var/lib/pulp/published' do
@@ -51,17 +72,9 @@ execute 'chown /var/lib/pulp/published' do
 	only_if "find /var/lib/pulp/published -user root -type d | grep /var/lib/pulp/published"
 end
 
-template '/etc/httpd/conf.d/pulp.conf' do
-    source 'pulp.conf.erb'
-    owner 'root'
-    group 'root'
-    mode '0644'
-    notifies :restart, 'service[httpd]'
-end
-
 execute 'setup-db' do
     command "pulp-manage-db && touch '/var/lib/pulp/.dbinit'"
     user 'apache'
     not_if { ::File.exists?('/var/lib/pulp/.dbinit') }
-    notifies :restart, 'service[httpd]'
+    notifies :restart, 'httpd_service[default]'
 end
