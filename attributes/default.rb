@@ -82,6 +82,8 @@ default['pulp']['client'] = {
 
 default['pulp']['repositories'] = []
 
+default['pulp']['ssl']['conf']['SSLCertificateFile'] = '/etc/pki/tls/certs/localhost.crt'
+default['pulp']['ssl']['conf']['SSLCertificateKeyFile'] = '/etc/pki/tls/private/localhost.key'
 
 default['pulp']['server']['conf']['database']['name'] = 'pulp_database'
 default['pulp']['server']['conf']['database']['seeds'] = 'localhost:27017'
