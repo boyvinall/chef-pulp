@@ -97,7 +97,7 @@ default['pulp']['server']['conf']['server']['default_login'] = 'admin'
 default['pulp']['server']['conf']['server']['default_password'] = 'admin'
 default['pulp']['server']['conf']['server']['debugging_mode'] = false
 
-default['pulp']['server']['conf']['security']['cacert'] = 'etc/pki/pulp/ca.crt'
+default['pulp']['server']['conf']['security']['cacert'] = '/etc/pki/pulp/ca.crt'
 default['pulp']['server']['conf']['security']['cakey'] = '/etc/pki/pulp/ca.key'
 default['pulp']['server']['conf']['security']['ssl_ca_certificate'] = '/etc/pki/pulp/ssl_ca.crt'
 default['pulp']['server']['conf']['security']['user_cert_expiration'] = 7
