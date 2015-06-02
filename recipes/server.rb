@@ -73,8 +73,7 @@ execute 'chown /var/lib/pulp/published' do
 end
 
 execute 'setup-db' do
-    command "pulp-manage-db && touch '/var/lib/pulp/.dbinit'"
+    command 'pulp-manage-db'
     user 'apache'
-    not_if { ::File.exists?('/var/lib/pulp/.dbinit') }
     notifies :restart, 'httpd_service[default]'
 end
